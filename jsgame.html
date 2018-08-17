@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>jsgame</title>
+		<link rel="stylesheet" type="text/css" href="css/jsgame.css"/>
+		<style>
+			#d1 {
+				width: 600px;
+				height: 600px;
+				margin: 50px auto;
+				background-image: url(img/floor4.jpg);
+				background-size:80px 80px;
+				background-repeat: repeat;
+				background-position: 0 0;
+				border: 1px solid black;
+			}
+		</style>
+	</head>
+	<body>
+		<button id="start">开始</button>
+
+		<div id="d1">
+			<canvas id="can1" width="600px" height="600px" "></canvas>
+
+		</div>
+		<script src="js/man.js"></script>
+		<script src="js/ground.js"></script>
+		<script>
+			window.onload=function(){
+				let man;
+				let ground;
+				let can1 = document.querySelector("#can1");
+				let outbox=document.querySelector("#d1");
+				
+				ground=new Ground(outbox);
+				//点开始按钮
+				document.querySelector("#start").onclick=function (){
+					manobj=new Man();
+					//人物选择
+					manobj.man.src="img/guagua.png";
+					//人物切图
+					//鸣人宽128,高192,每个格子宽32,高48.
+					//呱呱宽96，高96，每个格子宽高24
+					manobj.loca={sx:0,sy:0,sw:24,sh:24,dx:0,dy:0,dw:40,dh:40};
+					//人物运动
+					manobj.move();
+				}
+				
+			}
+			
+		</script>
+	</body>
+</html>
