@@ -1,0 +1,30 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+#d1 {
+	width: 600px;
+	height: 520px;
+	margin: 50px auto;
+	background-image:url(../img/floor4.jpg);
+	background-size:80px 80px;
+	background-repeat: repeat;
+	background-position: 0 0;
+	border: 1px solid black;
+	position: relative;
+	overflow: hidden;
+}
+#can1 {
+}
+.img1 {
+	width: 40px;
+	height:45px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+.boomer {
+	width: 40px;
+	height: 40px;
+	position: absolute;
+}

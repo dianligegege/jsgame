@@ -5,39 +5,35 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>jsgame</title>
 		<link rel="stylesheet" type="text/css" href="css/jsgame.css"/>
-		<style>
-			#d1 {
-				width: 600px;
-				height: 600px;
-				margin: 50px auto;
-				background-image: url(img/floor4.jpg);
-				background-size:80px 80px;
-				background-repeat: repeat;
-				background-position: 0 0;
-				border: 1px solid black;
-			}
-		</style>
+		
 	</head>
 	<body>
 		<button id="start">开始</button>
 
 		<div id="d1">
-			<canvas id="can1" width="600px" height="600px" "></canvas>
-
+			<canvas id="can1" width="600px" height="520px" ></canvas>
 		</div>
 		<script src="js/man.js"></script>
 		<script src="js/ground.js"></script>
 		<script>
 			window.onload=function(){
-				let man;
-				let ground;
+				let  manobj;
+				var  groundobj;
 				let can1 = document.querySelector("#can1");
 				let outbox=document.querySelector("#d1");
 				
-				ground=new Ground(outbox);
+				//箱子的摆放
+				groundobj=new Ground(outbox);
+				groundobj.box1.src='img/box1.jpg';
+				groundobj.box();
+				
+				// document.body.innerHTML="<img  src='img/box1.jpg'>"
+				// document.body.innerHTML='<img src="/img/box1.jpg">';
+
+				
 				//点开始按钮
 				document.querySelector("#start").onclick=function (){
-					manobj=new Man();
+					manobj=new Man(outbox,groundobj);
 					//人物选择
 					manobj.man.src="img/guagua.png";
 					//人物切图
@@ -46,6 +42,8 @@
 					manobj.loca={sx:0,sy:0,sw:24,sh:24,dx:0,dy:0,dw:40,dh:40};
 					//人物运动
 					manobj.move();
+					//放炸弹
+					manobj.boom();
 				}
 				
 			}
