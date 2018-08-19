@@ -5,11 +5,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>jsgame</title>
 		<link rel="stylesheet" type="text/css" href="css/jsgame.css"/>
-		
 	</head>
 	<body>
 		<button id="start">开始</button>
-
+		<p id="scole">炸弹威力：1级</p>
 		<div id="d1">
 			<canvas id="can1" width="600px" height="520px" ></canvas>
 		</div>
@@ -21,29 +20,46 @@
 				var  groundobj;
 				let can1 = document.querySelector("#can1");
 				let outbox=document.querySelector("#d1");
-				
+				let scole = document.querySelector("#scole");
 				//箱子的摆放
 				groundobj=new Ground(outbox);
 				groundobj.box1.src='img/box1.jpg';
 				groundobj.box();
 				
-				// document.body.innerHTML="<img  src='img/box1.jpg'>"
-				// document.body.innerHTML='<img src="/img/box1.jpg">';
-
 				
 				//点开始按钮
 				document.querySelector("#start").onclick=function (){
-					manobj=new Man(outbox,groundobj);
-					//人物选择
-					manobj.man.src="img/guagua.png";
+					manobj1=new Man(outbox,groundobj);
+					//一号人物选择
+					manobj1.man.src="img/guagua.png";
 					//人物切图
-					//鸣人宽128,高192,每个格子宽32,高48.
 					//呱呱宽96，高96，每个格子宽高24
-					manobj.loca={sx:0,sy:0,sw:24,sh:24,dx:0,dy:0,dw:40,dh:40};
+					manobj1.loca={sx:0,sy:0,sw:24,sh:24,dx:0,dy:0,dw:40,dh:40};
+					//人物运动按键
+					manobj1.direction1=[37,38,39,40,13];
 					//人物运动
-					manobj.move();
-					//放炸弹
-					manobj.boom();
+					manobj1.move();
+					//炸弹范围
+					// manobj1.boomlen=2;
+					//艺术就是爆炸
+					manobj1.boom();
+					
+// 					// 二号人物
+// 					manobj2=new Man(outbox,groundobj);
+// 					//人物选择
+// 					manobj2.man.src="img/鸣人.png";
+// 					//人物切图
+// 					//鸣人宽128,高192,每个格子宽32,高48.
+// 					manobj2.loca={sx:0,sy:0,sw:32,sh:48,dx:200,dy:0,dw:40,dh:40};
+// 					//人物运动按键
+// 					manobj2.direction1=[65,87,68,83,32];
+// 					//人物运动
+// 					manobj2.move();
+// 					
+// 					//炸弹范围
+// 					manobj2.boomlen=3;
+// 					//艺术就是爆炸
+// 					manobj2.boom();
 				}
 				
 			}

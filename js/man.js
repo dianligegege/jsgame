@@ -8,14 +8,22 @@ function Man(outbox,groundobj) {
 	this.height = 520;
 	this.man = new Image();
 	this.groundobj=groundobj;
+	this.boxmap=this.groundobj.boxmap;//盒子地图
+	this.moneymap=this.groundobj.moneymap;
 	this.outbox=outbox;
-	this.livebox=document.querySelectorAll(".img1");//所有盒子
+	this.livebox=document.querySelectorAll(".img1");//所有1 2盒子
+	this.boxall=document.querySelectorAll(".boxall");//所有0 1 2盒子
 	this.switch1=0;
-	this.boomer=document.createElement('img');
+	this.boomer=document.createElement('img');//炸弹
+	this.boomlen=1;//炸弹范围
+	
+	// this.direction1=[37,38,39,40];
 }
 
 Man.prototype.move = function() {
-
+	
+	console.log(scole);
+	
 	var This = this;
 	// var switch1=0;
 	
@@ -35,14 +43,15 @@ Man.prototype.move = function() {
 		};
 		//开始运动
 		function moving(e) {
+			console.log(This.loca);
 			//当用户按不同方向键的时候，裁剪不同的行
 			e.preventDefault();
-			let code = e.keyCode;
-			let dirArr = [];
-			dirArr[37] = 1;
-			dirArr[38] = 3;
-			dirArr[39] = 2;
-			dirArr[40] = 0;
+			var code = e.keyCode;
+			var dirArr = [];
+			dirArr[This.direction1[0]] = 1;
+			dirArr[This.direction1[1]] = 3;
+			dirArr[This.direction1[2]] = 2;
+			dirArr[This.direction1[3]] = 0;
 			This.direction = (typeof dirArr[code] == 'number') ? dirArr[code] : This.direction;
 
 			//往不同的方向走
@@ -116,7 +125,6 @@ Man.prototype.move = function() {
 							break;
 						} else {
 							duicuo4 = 0;
-
 						}
 					}
 					if(duicuo4==1){
@@ -126,10 +134,10 @@ Man.prototype.move = function() {
 					} else if(duicuo4==0) {
 						action();
 					}
-
 					break;
 				default:
 					break;
+					
 			}
 			
 			//跳跃动作
@@ -164,18 +172,30 @@ Man.prototype.move = function() {
 					};
 				}, This.oncetime);
 			}
-
+			
+			//判断是否吃到宝藏,增加炸弹爆炸长度
+			if(This.moneymap[This.loca.dy/40][This.loca.dx/40]==2){
+				This.moneymap[This.loca.dy/40][This.loca.dx/40]=0
+				This.boomlen++;
+				scole.innerHTML="炸弹威力："+This.boomlen+"级";
+			}else if(This.moneymap[This.loca.dy/40][This.loca.dx/40]==1){
+				This.moneymap[This.loca.dy/40][This.loca.dx/40]=0;
+				if(confirm("恭喜你发现彩蛋！是否前往训练靶场？")){
+					location.href="overwatch.html";
+				};
+			}
 		}
 	}
 }
 
+//炸炸炸
 Man.prototype.boom = function(){
 	var This = this;
 	window.onkeydown=function(event){
-		//当跳跃动作完成后可以放炸弹
+		//当跳跃动作完成后才可以放炸弹
 		if(This.switch1==0){
 			var code=event.keyCode;
-			if(code==13){
+			if(code==This.direction1[4]){
 				console.log(This.loca.dx, This.loca.dy)
 				// var boomer=document.createElement('img');
 				This.boomer.classList.add('boomer');
@@ -187,18 +207,15 @@ Man.prototype.boom = function(){
 				
 				//定时爆炸
 				setTimeout(function(){
-					//先爆炸
 					//连环爆炸
 					fire();
-					//再消失
+					//炸弹再消失
 					setTimeout(function(){
 						This.boomer.remove();
 					},300)
 				},2000)
-
 			}
 		}
-		
 
 	}
 	
@@ -206,6 +223,58 @@ Man.prototype.boom = function(){
 	function fire(){
 		//炸弹先爆炸
 		This.boomer.src='img/boom.png';
+		var boxallnew=document.querySelectorAll(".boxall");
+		//炸弹位置 大数组 第几排
+		var arbig=parseInt(This.boomer.style.top)/40;
+		//炸弹位置小数组 第几列
+		var arlittle=parseInt(This.boomer.style.left)/40;
+		var arlocation=arbig*15+arlittle;
+		console.log(This.groundobj.boxmap)
+		for (var n = 1; n <=This.boomlen; n++) {
+			//炸右边
+			if ( arlittle+n<=14&& This.boxmap[arbig][arlittle + n] > 0) {
+				This.boxmap[arbig][arlittle + n] = 0;
+				This.boxall[arlocation +  n].src='img/boom.png';
+				(function(n){
+					setTimeout((function(){
+						This.outbox.removeChild(This.boxall[arlocation + n]);
+					}),300)
+				})(n)
+			};
+			//炸左边
+			if (arlittle>=n&& This.boxmap[arbig][arlittle - n] > 0) {
+				This.boxmap[arbig][arlittle - n] = 0;
+				This.boxall[arlocation - n].src='img/boom.png';
 
+				(function(n){
+					setTimeout((function(){
+						This.outbox.removeChild(This.boxall[arlocation - n]);
+					}),300)
+				})(n)
+			};
+			//炸上边
+			if (arbig>=n && This.boxmap[arbig - n][arlittle] > 0) {
+				This.boxmap[arbig - n][arlittle] = 0;
+				This.boxall[arlocation - (15 * n) ].src='img/boom.png';
+				(function(n){
+					setTimeout((function(){
+						This.outbox.removeChild(This.boxall[arlocation - (15 * n)]);
+					}),300)
+				})(n)
+			};
+			//炸下边
+			if (arbig+n<=12 && This.boxmap[arbig + n][arlittle]>0) {
+				This.boxmap[arbig + n][arlittle] = 0;
+				This.boxall[arlocation+ (15 * n) ].src='img/boom.png';
+				(function(n){
+					setTimeout((function(){
+						This.outbox.removeChild(This.boxall[arlocation + (15 * n)]);
+					}),300)
+				})(n)
+			}
+
+		};
+
+		};
 	}
-}
+

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>守望先锋 特别行动 射爆狗头</title>
+		<link rel="shortcut icon" type="image/x-icon" href="img/overwatch.ico"/>
+	</head>
+	<style>
+		body{
+			background-color: #CCCCCC;
+		}
+		#d1{
+			border: 1px solid #ccc;
+			width: 1170px;
+			height: 670px;
+			position: absolute;
+			top: 20px;
+			left: 177px;
+			background-color: white;
+		}
+		#xiaomietiao {
+			
+			width: 100px;
+			height: 20px;
+			border: 1px solid antiquewhite; 
+			margin: 5px 0 5px 5px;
+		}
+		#xt {
+			height: 20px;
+			background-color: antiquewhite;
+			width: 0px;
+		}
+		#cunhuotiao{
+			width: 100px;
+			height: 20px;
+			border: 1px solid red;
+			margin: 5px 0 5px 5px;
+			
+		}
+		#ch {
+			height: 20px;
+			background-color: red;
+			width: 0px;
+		}
+		#shijiantiao {
+			width: 100px;
+			height: 20px;
+			border: 1px solid greenyellow;
+			margin: 5px 0 5px 5px;
+		}
+		#sj {
+			height: 20px;
+			background-color: greenyellow;
+			width: 100px;
+		}
+		#d5 {
+			width: 150px;
+			height: 200px;
+			background-color: #CCCCCC;
+			margin-top: 250px;
+		}
+		#d5 h3 {
+			margin: 5px auto;
+			display: inline-block;
+		}
+		#dda {
+			margin-top: 50px;
+		}
+	</style>
+	<script>
+		var dingshi;
+		var count=0;
+		var weicount=0;
+		var n=60;
+		var shijian;
+		var kongqiang=0;
+		var shezhong=0;
+//		window.onload=init;
+		//图片出现定时器
+		function kaishi(){
+			window.clearInterval(dingshi);
+			dingshi=window.setInterval("chutu()",500)
+			shijian=window.setInterval("jindutiao()",1000)
+//			var dinmz=window.setInterval("mingzhongle()",2000);
+		}
+		
+		//生成出现图片
+		function chutu(){
+			var tu=document.createElement("img");
+			var n=Math.floor(Math.random()*9+1);
+			tu.src="img/"+n+".png";
+			tu.style.position="absolute";
+			var w=Math.random()*50+35;
+			var shang=Math.random()*560+35;
+			var zuo=Math.random()*1070+205;
+			
+			tu.style.top=shang+"px";
+			tu.style.left=zuo+"px";
+			
+			tu.width=w;
+			tu.onclick=xiaomie;
+			tu.style.cursor="crosshair";
+			document.body.appendChild(tu);
+			//未消灭敌人数
+			weicount++;
+			var weixiaomie=document.getElementById("d3");
+			weixiaomie.innerHTML=("存活敌人数："+weicount);
+			
+			//存活敌人进度条
+			var ch=document.getElementById("ch");
+			ch.style.width=weicount*(100/20)+"px";
+			
+			//敌人剩余20个时结束比赛
+			if (weicount>=21) {
+				alert("战败!你太菜了！")
+				location.reload();
+			} 
+			
+			//游戏时间
+//			shijian++;
+		}
+		
+		//点击消除图片
+		function xiaomie(){
+			this.parentNode.removeChild(this);
+			var obj=document.getElementById("au1");
+			obj.src="img/爆头音效.mp3";
+			obj.play();
+			count++;
+			//消灭敌人数
+			var xiaomiel=document.getElementById("d2");
+			xiaomiel.innerHTML=("消灭敌人数："+count);
+			//消灭100胜利
+			if(count>=100){
+				alert("胜利！强的一批！")
+				location.reload();
+			}
+			//消灭敌人进度条
+			var xtt=document.getElementById("xt");
+			xtt.style.width=count+"px";
+			
+			
+			//为消灭敌人数
+			weicount--;
+			var weixiaomie=document.getElementById("d3");
+			weixiaomie.innerHTML=("存活敌人数："+weicount);
+			
+			//射中
+//			shezhong++;
+//			return shezhong;
+//			var mingzhong=document.getElementById("mingzhonglv");
+//			var mz=Math.floor(shezhong/(shezhong+kongqiang)) ;
+//			mingzhong.innerHTML=("射击命中率："+mz*100+"%");
+		}
+	
+		//时间进度
+		function jindutiao(){
+			
+			var daojishi=n--;
+			//时间进度条
+			var sj=document.getElementById("sj");
+			sj.style.width=daojishi*(100/60)+"px";
+			
+			var d4=document.getElementById("d4");
+			d4.innerHTML=("游戏剩余时间："+n+"s");
+			//时间走完胜利
+			if(n<=-1){
+				alert("胜利！你是国服五百强");
+				location.reload();
+			}
+			
+		}
+		
+		//开枪音效
+		function kaiqiang(){
+			var obj=document.getElementById("au1");
+			obj.src="img/开枪.mp3";
+			obj.play();
+			
+//			kongqiang++;
+//			var mingzhong=document.getElementById("mingzhonglv");
+//			var mz=shezhongl/(shezhongl+kongqiang) ;
+//			mingzhong.innerHTML=("射击命中率："+mz*100+"%");
+		}
+		//改变鼠标样式
+		function shubiao(t){
+			t.style.cursor="crosshair";
+		}
+		
+		//暂停游戏
+		function zanting(){
+			alert("继续比赛？")
+			
+		}
+		
+		//射击命中率
+//		var zhong=xiaomie();
+//		var buzhong=kaiqiang();
+//		alert(zhong);
+//		
+//		function mingzhongle(){
+//			
+//			var mingzhong=document.getElementById("mingzhonglv");
+//			var mz1=zhong/(zhong+buzhong);
+//			var mz=Math.floor(mz1) ;
+//			mingzhong.innerHTML=("射击命中率："+mz*100+"%");
+//		}
+	</script>
+	<body>
+		<div id="dda">
+			<input type="button" value="开始比赛" onclick="kaishi()"/>
+			<input type="button"  value="暂停比赛" onclick="zanting()"/>
+			<div id="d1" onmouseover="shubiao(this)" onclick="kaiqiang()"></div>
+			<div id="d2">消灭敌人数：0</div>
+			<div id="xiaomietiao">
+				<div id="xt"></div>
+			</div>
+			<div id="d3">
+				存活敌人数：0
+			</div>
+			<div id="cunhuotiao">
+				<div id="ch"></div>
+			</div>
+			<div id="d4">游戏剩余时间：60s</div>
+			<div id="shijiantiao">
+				<div id="sj"></div>
+			</div>
+			<!--<div id="mingzhonglv">射击命中率：0</div>-->
+		</div>
+		
+		<div id="d5">
+			<h3>游戏规则</h3>
+			<p>胜利条件：消灭敌人数达到100或坚持60s!</p>
+			<p>失败条件：场上存活敌人数达到20!</p>
+		</div>
+		<audio src="img/爆头音效.mp3" id="au1"></audio>
+	</body>
+</html>
